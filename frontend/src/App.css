@@ -1,0 +1,137 @@
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+
+.header-container {
+  position: fixed;
+  top: 0;
+  /* position: anchor; */
+  width: 100%;
+  background-color: royalblue;
+  display: flex;
+  /* margin-bottom: auto; */
+}
+
+.header-left {
+  align-content:center;
+  margin-left: auto;
+  width: 25%;
+}
+
+.header-mid {
+  align-content: center;
+  margin-left: auto;
+}
+
+.header-right {
+  width: 25%;
+  align-content: center;
+  color: khaki;
+}
+
+.hack-logo {
+  width: 250px;
+}
+
+.team-logo {
+  width: 125px;
+}
+
+.mission-container {
+  margin-top: 100px;
+  width: 100%;
+  background-color: moccasin;
+  padding: 50px;
+}
+
+.team-intro {
+  margin-top: 50px;
+  width: 100%;
+  padding: 50px;
+  background-color: lightgray;
+}
+
+.member-grid {
+  display: grid;
+  grid-template-columns: 500px 1000px;
+  grid-template-rows: auto auto auto auto;
+}
+
+.philemon-photo {
+  width: 400px;
+}
+
+.progress-container {
+  margin-top: 50px;
+  background-color: moccasin;
+  width: 100%;
+  padding: 50px;
+}
+
+.progress-grid {
+  display: grid;
+  grid-template-columns: 800px 800px
+}
+
+.day1intro-photo {
+  width: 600px;
+}
+
+.control-center-header {
+  margin-top:50px;
+  text-align: center;
+}
+
+.control-center-container {
+  background-color: lightgray;
+  width: 100%;
+  text-align: center;
+  display: flex;
+}
+
+.control-center-left {
+  width: 20%;
+}
+
+.control-center-mid {
+  width: 60%;
+}
+
+.control-center-right {
+  width: 20%;
+}

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import io from 'socket.io-client';
 import './App.css';
+import ReactPlayer from 'react-player'
+
 
 const socket = io('http://localhost:8000');
 
@@ -43,6 +45,7 @@ function App() {
   };
 
   
+
   return (
     <div className="App">
       <div className="App">
@@ -113,17 +116,22 @@ function App() {
             <h4>Down</h4>
             <h4>Arm Reach Backward</h4>
             <h4>Left</h4>
-            <h4>Arm Angle Upward</h4>
+            <h4>Arm Rotate Left</h4>
             <h4>Right</h4>
-            <h4>Arm Angle Downward</h4>
+            <h4>Arm Rotate Right</h4>
+            <h4>i</h4>
+            <h4>Arm Angle Up</h4>
             <h4>j</h4>
             <h4>Grab</h4>
             <h4>k</h4>
+            <h4>Arm Angle Down</h4>
+            <h4>l</h4>
             <h4>Release</h4>
           </div>
         </div>
         <div className="control-center-mid">
           <h2>Camera POV</h2>
+          <iframe width="800" height="600" src="http://192.168.50.53"></iframe>
         </div>
         <div className="control-center-right">
           <h2>Statistics</h2>

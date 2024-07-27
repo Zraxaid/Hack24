@@ -105,9 +105,9 @@ function App() {
             <h4>a</h4>
             <h4>Rotate Left</h4>
             <h4>s</h4>
-            <h4>Rotate Right</h4>
-            <h4>d</h4>
             <h4>Backward</h4>
+            <h4>d</h4>
+            <h4>Rotate Right</h4>
             <h4>Up</h4>
             <h4>Arm Reach Forward</h4>
             <h4>Down</h4>

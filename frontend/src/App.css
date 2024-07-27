@@ -127,6 +127,13 @@
   .control-center-left {
     width: 20%;
   }
+
+  .keybind-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 10px;
+    row-gap: 10px;
+  }
   
   .control-center-mid {
     width: 60%;

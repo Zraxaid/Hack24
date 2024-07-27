@@ -1,7 +1,7 @@
 from connections import connect_mqtt, connect_internet
 from time import sleep
-from constants import ssid, mqtt_server, mqtt_user, mqtt_pass
-
+# from constants import ssid, mqtt_server, mqtt_user, mqtt_pass
+# Input variables here:
 
 # Function to handle an incoming message
 
@@ -13,7 +13,7 @@ def cb(topic, msg):
 
 def main():
     try:
-        connect_internet(ssid,password=None)
+        connect_internet(ssid,password='none') #Change none to the appropriate password.
         client = connect_mqtt(mqtt_server, mqtt_user, mqtt_pass)
 
         client.set_callback(cb)

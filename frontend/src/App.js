@@ -104,7 +104,7 @@ function App() {
           <h2>Camera POV</h2>
         </div>
         <div className="control-center-right">
-          <h2>Statistics</h2>
+          <h2>Statistic</h2>
         </div>
       </div>
     </div>

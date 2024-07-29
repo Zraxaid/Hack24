@@ -117,6 +117,7 @@ function App() {
     }
   });
 
+  //functions for sending messages to MQTT broker through socket
   const sendDirection = (direction) => {
     socket.emit('send-direction', direction);
   };

@@ -59,12 +59,6 @@ EN_A.freq(1000)
 EN_B.freq(1000)
 EN_C.freq(1000)
 
-# Initialize all pins to low state
-IN1.value(0)
-IN2.value(0)
-IN3.value(0)
-IN4.value(0)
-
 EN_A.duty_u16(0)
 EN_B.duty_u16(0)
 
@@ -87,11 +81,11 @@ arm_servo_rotate = Servo(pin_id=11)
 #LED
 np = neopixel.NeoPixel(machine.Pin(2), 12)
 
-# from constants import ssid, mqtt_server, mqtt_user, mqtt_pass
-ssid = "HAcK-Project-WiFi-2"
-mqtt_server = "4abe997c2384415d9ce4cebbac507374.s1.eu.hivemq.cloud"
-mqtt_user = "user1"
-mqtt_pass = "Abcd1234"
+#usernames and passwords
+ssid = ""
+mqtt_server = ""
+mqtt_user = ""
+mqtt_pass = ""
 
 #angles
 angle_front = 0
@@ -101,14 +95,17 @@ pi = math.pi
 
 #speed
 motor_speed = 30000
-# Function to handle an incoming message
+
+# Function to handle incoming messages
 def cb(topic, msg):
     global angle_front, angle_up, angle_left, pi, motor_speed
     print(f"Topic: {topic}, Message: {msg}")
 
+    #reads motor speed
     if topic == b"speed":
         motor_speed = int(msg)
 
+    #reads direction
     if topic == b"direction":
         if msg == b"forward":
             # motor_pair_a_forward(motor_speed)
@@ -130,9 +127,9 @@ def cb(topic, msg):
             motor_pair_a_stop()
             motor_pair_b_stop()
 
-            
-      elif topic == b"arm":
-        if msg == b"forward": #assume arm angle starts at 0 (_/) -> something like this (/ -> arm)
+    #arm messages  
+    elif topic == b"arm":
+        if msg == b"forward": 
             if angle_front < 0:
                 pass
             elif angle_front >= 0 and angle_front <= 80:
@@ -144,7 +141,7 @@ def cb(topic, msg):
             elif angle_front <= 80 and angle_front >= 0:
                 angle_front += 5
                 arm_servo_fb.write(angle_front)
-                elif msg == b"arm-up": #assume arm angle starts at 160 (/|) -> something liek this (/ -> arm)
+        elif msg == b"arm-up": 
             if angle_up > 160:
                 pass
             elif angle_up <= 160 and angle_up >= 0:
@@ -161,7 +158,7 @@ def cb(topic, msg):
                 light(np)
             elif msg == b"off":
                 off(np)
-        elif msg == b"left-rotate": #assume arm angle starts at 0 (/) ->something like this in bird's eye view
+        elif msg == b"left-rotate": 
             if angle_left < 0:
                 pass
             elif angle_left >=0 and angle_left <= 160:
@@ -206,7 +203,7 @@ def temp_humid(sensor):
     finally:
         pass
 
-#motor functions
+#wheel motor functions
 def motor_pair_a_forward(speed):
     IN11.value(1)
     IN12.value(0)
@@ -246,6 +243,7 @@ def motor_pair_b_backward(speed):
     IN42.value(0)
     EN_A2.duty_u16(speed)
     EN_B2.duty_u16(speed)
+
 def motor_pair_b_stop():
     IN31.value(0)
     IN32.value(0)
@@ -274,7 +272,7 @@ def stop_all():
     motor_pair_a_stop()
     motor_pair_b_stop()
 
-claw motor functions
+#claw motor functions
 def motor_grab():
     IN5.value(1)
     IN6.value(0)
@@ -303,12 +301,13 @@ def off(np):
     np.write()
     
 
+#main function
 def main():
     led = Pin('LED', Pin.OUT)
     led.value(1)
     light(np)
     try:
-        connect_internet(ssid,password="UCLA.HAcK.2024.Summer")
+        connect_internet(ssid,password="")
         client = connect_mqtt(mqtt_server, mqtt_user, mqtt_pass)
 
         client.set_callback(cb)

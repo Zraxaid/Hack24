@@ -1,77 +1,37 @@
-/* .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
+/* The header container div will be fixed at the top even if we scroll down the react webpage. The header container contains 3 items/divs in it. */
 .header-container {
     position: fixed;
     top: 0;
-    /* position: anchor; */
     width: 100%;
     background-color: royalblue;
     display: flex;
-    /* margin-bottom: auto; */
   }
-  
+  /* The header left div will be the left side of the header.*/
   .header-left {
     align-content:center;
     margin-left: auto;
     width: 25%;
   }
-  
+  /* The header mid div will be the middle part of the header. */
   .header-mid {
     align-content: center;
     margin-left: auto;
   }
-  
+  /* The header right div will be the right side of the header. */
   .header-right {
     width: 25%;
     align-content: center;
     color: khaki;
   }
-  
+  /* Logo of HAcK */
   .hack-logo {
     width: 250px;
   }
-  
+  /* Logo of our team (The Technicians) */
   .team-logo {
     width: 125px;
   }
-  
+
   .mission-container {
     margin-top: 100px;
     width: 100%;
@@ -85,14 +45,24 @@
     padding: 50px;
     background-color: lightgray;
   }
-  
+  /* The member-grid div will have a grid pattern designed to have the team members' photo on the left column and the team member info on the right column. */
   .member-grid {
     display: grid;
+    margin: 20px;
     grid-template-columns: 500px 1000px;
     grid-template-rows: auto auto auto auto;
+    row-gap: 50px;
   }
   
   .philemon-photo {
+    width: 400px;
+  }
+
+  .min-photo {
+    width: 400px;
+  }
+
+  .diego-photo {
     width: 400px;
   }
   
@@ -102,7 +72,7 @@
     width: 100%;
     padding: 50px;
   }
-  
+  /* The progress grid div is the grid pattern used for the "Our Journey" section of the webpage. */
   .progress-grid {
     display: grid;
     grid-template-columns: 800px 800px
@@ -111,12 +81,12 @@
   .day1intro-photo {
     width: 600px;
   }
-  
+  /* The control center header is just used for storing the text "Control Center". */
   .control-center-header {
     margin-top:50px;
     text-align: center;
   }
-  
+  /* The control center container  */
   .control-center-container {
     background-color: lightgray;
     width: 100%;
@@ -125,7 +95,8 @@
   }
   
   .control-center-left {
-    width: 20%;
+    margin-left: 10px;
+    width: 30%;
   }
 
   .keybind-grid {
@@ -140,5 +111,7 @@
   }
   
   .control-center-right {
-    width: 20%;
+    width: 30%;
+    text-align: center;
+    margin-right: 10px;
   }

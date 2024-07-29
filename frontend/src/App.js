@@ -1,18 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import io from 'socket.io-client';
 import './App.css';
-import ReactPlayer from 'react-player'
-
+import Reactplayer from 'react-player'
 
 const socket = io('http://localhost:8000');
 
 
 function App() {
 
+  //Output values
+  
 
-  const [temp, setTemp] = useState(null);
+
+  //Input values
+  const [temp, setTemp] = useState(1);
   const [ultrasonic, setUltrasonic] = useState(null);
   const [humidity, setHumidity] = useState(null);
+  const [speed, setSpeed] = useState(1);
 
   useEffect(() => {
     // Listen for temperature updates
@@ -24,7 +28,7 @@ function App() {
     socket.on('ultrasonic', (data) => {
       setUltrasonic(data);
     });
-
+    // Listen for humidity updates
     socket.on('humidity', (data) => {
       setHumidity(data);
     });
@@ -36,6 +40,83 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'w')
+      {
+        sendDirection("forward");
+        sendSpeedVAlue(speed);
+      }
+      else if (event.key === 'a')
+      {
+        sendDirection("left");
+        sendSpeedVAlue(speed);
+      }
+      else if (event.key === 's')
+      {
+        sendDirection("backward");
+        sendSpeedVAlue(speed);
+      }
+      else if (event.key === 'd')
+      {
+        sendDirection("right");
+        sendSpeedVAlue(speed);
+      }
+      else if (event.key === 't')
+      {
+        sendArmValue("forward");
+      }
+      else if (event.key === 'g')
+      {
+        sendArmValue("backward")
+      }
+      else if (event.key === 'f')
+      {
+        sendArmValue("right-rotate");
+      }
+      else if (event.key === 'h')
+      {
+        sendArmValue("left-rotate")
+      }
+      else if (event.key === 'i')
+      {
+        sendArmValue("arm-up");
+      }
+      else if (event.key === "k")
+      {
+        sendArmValue("arm-down");
+      }
+      else if (event.key === 'j')
+      {
+        sendPinchValue("grab");
+      }
+      else if (event.key === 'l')
+      {
+        sendPinchValue("release");
+      }
+      else if (event.key === 'n')
+      {
+        sendLightValue("on")
+      }
+      else if (event.key === 'm')
+      {
+        sendLightValue("off")
+      }
+    }
+    const handleKeyUp = () => {
+      sendDirection("stop")
+      sendPinchValue("stop")
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    window.addEventListener('keyup', handleKeyUp)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      window.addEventListener('keyup', handleKeyUp)
+    }
+  });
+
   const sendDirection = (direction) => {
     socket.emit('send-direction', direction);
   };
@@ -44,26 +125,22 @@ function App() {
     socket.emit('send-arm-value', value);
   };
 
-  
+  const sendPinchValue = (value) => {
+    socket.emit('send-pinch-value', value)
+  }
 
+  const sendLightValue = (value) => {
+    socket.emit('send-light-value', value)
+  }
+
+  const sendSpeedVAlue = (value) => {
+    socket.emit('send-speed-value', value)
+  }
+
+  
   return (
     <div className="App">
       <div className="App">
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
-      {/* This is the header of the webpage and it will be always present. */}
       <div className="header-container">
         <div className="header-left">
           <img className='hack-logo' src='Hack 24 Logo.png' alt='hack logo'></img>
@@ -111,13 +188,13 @@ function App() {
             <h4>Backward</h4>
             <h4>d</h4>
             <h4>Rotate Right</h4>
-            <h4>Up</h4>
+            <h4>t</h4>
             <h4>Arm Reach Forward</h4>
-            <h4>Down</h4>
+            <h4>g</h4>
             <h4>Arm Reach Backward</h4>
-            <h4>Left</h4>
+            <h4>f</h4>
             <h4>Arm Rotate Left</h4>
-            <h4>Right</h4>
+            <h4>h</h4>
             <h4>Arm Rotate Right</h4>
             <h4>i</h4>
             <h4>Arm Angle Up</h4>
@@ -127,6 +204,10 @@ function App() {
             <h4>Arm Angle Down</h4>
             <h4>l</h4>
             <h4>Release</h4>
+            <h4>n</h4>
+            <h4>Turn On LED</h4>
+            <h4>m</h4>
+            <h4>Turn Off LED</h4>
           </div>
         </div>
         <div className="control-center-mid">
@@ -135,8 +216,34 @@ function App() {
         </div>
         <div className="control-center-right">
           <h2>Statistics</h2>
+          <p>Temperature in C is: {temp}</p>
+          <p>Humidity is: {humidity}</p>
+          {ultrasonic > 250 ? (
+            <p>
+              The field is clear
+            </p>
+          ) : (
+            <p>
+              An obstacle is {ultrasonic} cm away
+            </p>
+          )}
         </div>
       </div>
+        <div>
+          <input 
+            type="range"
+            min={50000}
+            max={65535}
+            step={100}
+            value={speed}
+            onChange={(e) => {
+              setSpeed(e.target.valueAsNumber)
+            }}
+          />
+        </div>
+        <div>
+          <p>final speed: {speed}</p>
+        </div>
     </div>
     </div>
   );

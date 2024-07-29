@@ -1,0 +1,4 @@
+ssid = "HAcK-Project-WiFi-2"
+mqtt_server = "4abe997c2384415d9ce4cebbac507374.s1.eu.hivemq.cloud"
+mqtt_user = "user1"
+mqtt_pass = "Abcd1234"

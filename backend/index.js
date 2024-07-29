@@ -101,7 +101,7 @@ io.on("connection", (socket) => {
   // Listen for direction messages from the frontend
   socket.on('send-direction', (message) => {
     console.log('Received direction message from frontend:', message);
-    client.publish("direction", message);
+    client.publish("direction", message.toString());
   });
 
   // Listen for arm value messages from the frontend
@@ -114,6 +114,18 @@ io.on("connection", (socket) => {
     console.log('Received arm value message from frontend:', message);
     client.publish("pinch", message.toString());
   });
+
+  //Lisetn for light value messages from the frontend
+  socket.on('send-light-value', (message) => {
+    console.log("Received light message from front end: ", message);
+    client.publish("light", message.toString());
+  })
+
+  //Listen for speed value messages from the front end
+  socket.on('send-speed-value', (message) => {
+    console.log("Received speed value message from front end", message);
+    client.publish("speed", message.toString());
+  })
 
   socket.on("disconnect", () => {
     console.log("Frontend disconnected from socket");
@@ -143,13 +155,4 @@ client.on('message', (TOPIC, payload) => {
     latestHumidity = payload.toString();
   }
 });
-
-
-
-
-
-
-
-
-
 

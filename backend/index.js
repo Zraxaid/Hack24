@@ -110,6 +110,7 @@ io.on("connection", (socket) => {
     client.publish("arm", message.toString());
   });
 
+  // Listen for claw value messages from the frontend
   socket.on('send-pinch-value', (message) => {
     console.log('Received arm value message from frontend:', message);
     client.publish("pinch", message.toString());
@@ -155,4 +156,3 @@ client.on('message', (TOPIC, payload) => {
     latestHumidity = payload.toString();
   }
 });
-

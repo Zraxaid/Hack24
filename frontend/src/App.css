@@ -45,6 +45,7 @@
     padding: 50px;
     background-color: lightgray;
   }
+
   /* The member-grid div will have a grid pattern designed to have the team members' photo on the left column and the team member info on the right column. */
   .member-grid {
     display: grid;
@@ -53,17 +54,10 @@
     grid-template-rows: auto auto auto auto;
     row-gap: 50px;
   }
-  
-  .philemon-photo {
-    width: 400px;
-  }
 
-  .min-photo {
-    width: 400px;
-  }
-
-  .diego-photo {
-    width: 400px;
+  /* The member-photo div will be used to control the width of the member photos. */
+  .member-photo {
+    width: 250px;
   }
   
   .progress-container {
@@ -72,21 +66,30 @@
     width: 100%;
     padding: 50px;
   }
+
   /* The progress grid div is the grid pattern used for the "Our Journey" section of the webpage. */
   .progress-grid {
     display: grid;
-    grid-template-columns: 800px 800px
+    grid-template-columns: 500px 1000px;
+    row-gap: 50px;
   }
-  
-  .day1intro-photo {
-    width: 600px;
+
+  /* The dayofHAcK div is used to split the progress container into 3 sections according to the day. */
+  .dayOfHAcK {
+    text-align: justify;
   }
+
+  /* The progress-photo div is used to control the width of the photos that will be used in the "Our Journey" section of the website. */
+  .progress-photo {
+    width: 400px;
+  }
+
   /* The control center header is just used for storing the text "Control Center". */
   .control-center-header {
     margin-top:50px;
     text-align: center;
   }
-  /* The control center container  */
+  /* The control center container div is where the important parts of the control center will be at like a grid for the keybinds on the left, a camera feed in the middle and the statistics/data on the right..  */
   .control-center-container {
     background-color: lightgray;
     width: 100%;

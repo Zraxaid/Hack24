@@ -9,14 +9,13 @@ import math
 import utime
 
 
-# Define GPIO pins for Motor Pair A (Motor A and Motor B)
-# Define GPIO pins for Motor Pair A (Motor A and Motor B)
+# Define GPIO pins for Motors 1 and 2
 IN11 = Pin(14, Pin.OUT)
 IN12 = Pin(15, Pin.OUT)
 IN21 = Pin(12, Pin.OUT)
 IN22 = Pin(13, Pin.OUT)
 
-# Define GPIO pins for Motor Pair B (Motor C and Motor D)
+# Define GPIO pins for Motors 3 and 4
 IN31 = Pin(27, Pin.OUT)
 IN32 = Pin(28, Pin.OUT)
 IN41 = Pin(20, Pin.OUT)
@@ -49,90 +48,73 @@ EN_B1.duty_u16(0)
 EN_A2.duty_u16(0)
 EN_B2.duty_u16(0)
 
-# Define PWM pins for enabling the motors
-EN_A = machine.PWM(machine.Pin(16))
-EN_B = machine.PWM(machine.Pin(19))
+# Define PWM pins for enabling the claw motor
 EN_C = machine.PWM(machine.Pin(11))
 
 # Set PWM frequency to 1000Hz
-EN_A.freq(1000)
-EN_B.freq(1000)
 EN_C.freq(1000)
 
-# Initialize all pins to low state
-IN1.value(0)
-IN2.value(0)
-IN3.value(0)
-IN4.value(0)
-
-EN_A.duty_u16(0)
-EN_B.duty_u16(0)
-
-
-#Define GPIO pins for claw Motors
+# Define GPIO pins for claw Motors
 IN5 = machine.Pin(6, machine.Pin.OUT)
 IN6 = machine.Pin(7, machine.Pin.OUT)
 
-# Define PWM pins for enabling the mtors
-
+# Define PWM pins for enabling the claw motor
 EN_C.duty_u16(0)
 
-#sensors
-ultrasonic_sensor = HCSR04(trigger_pin=10, echo_pin=11)
-temp_humid_sensor = DHT11(Pin(15, Pin.IN, Pin.PULL_UP))
+# Define GPIO pins for the ultrasonic sensor
+ultrasonic_sensor = HCSR04(trigger_pin=9, echo_pin=10)
+
+# Define GPIO pins for the temperature and humidity sensors
+temp_humid_sensor = DHT11(Pin(8, Pin.IN, Pin.PULL_UP))
+
+# Define GPIO pins for the servos
 arm_servo_fb = Servo(pin_id=4)
 arm_servo_ud = Servo(pin_id=5)
-arm_servo_rotate = Servo(pin_id=11)
 
-#LED
+# Define GPIO pin for the LED ring
 np = neopixel.NeoPixel(machine.Pin(2), 12)
 
-# from constants import ssid, mqtt_server, mqtt_user, mqtt_pass
-ssid = "HAcK-Project-WiFi-2"
-mqtt_server = "4abe997c2384415d9ce4cebbac507374.s1.eu.hivemq.cloud"
-mqtt_user = "user1"
-mqtt_pass = "Abcd1234"
+# Usernames and passwords, could also import from constants.py
+ssid = "?"
+mqtt_server = "?"
+mqtt_user = "?"
+mqtt_pass = "?"
 
-#angles
+# Arm angles
 angle_front = 0
 angle_up = 150
 angle_left = 0
 pi = math.pi
 
-#speed
+# Motor speed
 motor_speed = 30000
-# Function to handle an incoming message
+
+# Function to handle incoming messages
 def cb(topic, msg):
     global angle_front, angle_up, angle_left, pi, motor_speed
     print(f"Topic: {topic}, Message: {msg}")
 
+    # Reads motor speed
     if topic == b"speed":
         motor_speed = int(msg)
 
+    # Reads direction
     if topic == b"direction":
         if msg == b"forward":
-            # motor_pair_a_forward(motor_speed)
-            # motor_pair_b_forward(motor_speed)
             move_forward(motor_speed)
         elif msg == b"backward":
-            # motor_pair_a_backward(motor_speed)
-            # motor_pair_b_backward(motor_speed)
             move_backward(motor_speed)
         elif msg == b"left":
-            # motor_pair_a_forward(motor_speed)
-            # motor_pair_b_backward(motor_speed)
             rotate_left(motor_speed)
         elif msg == b"right":
-            # motor_pair_a_backward(motor_speed)
-            # motor_pair_b_forward(motor_speed)
             rotate_right(motor_speed)
         elif msg == b"stop":
             motor_pair_a_stop()
             motor_pair_b_stop()
 
-            
-      elif topic == b"arm":
-        if msg == b"forward": #assume arm angle starts at 0 (_/) -> something like this (/ -> arm)
+    # Arm messages  
+    elif topic == b"arm":
+        if msg == b"forward": 
             if angle_front < 0:
                 pass
             elif angle_front >= 0 and angle_front <= 80:
@@ -144,7 +126,7 @@ def cb(topic, msg):
             elif angle_front <= 80 and angle_front >= 0:
                 angle_front += 5
                 arm_servo_fb.write(angle_front)
-                elif msg == b"arm-up": #assume arm angle starts at 160 (/|) -> something liek this (/ -> arm)
+        elif msg == b"arm-up": 
             if angle_up > 160:
                 pass
             elif angle_up <= 160 and angle_up >= 0:
@@ -161,19 +143,6 @@ def cb(topic, msg):
                 light(np)
             elif msg == b"off":
                 off(np)
-        elif msg == b"left-rotate": #assume arm angle starts at 0 (/) ->something like this in bird's eye view
-            if angle_left < 0:
-                pass
-            elif angle_left >=0 and angle_left <= 160:
-                angle_left += 10
-                arm_servo_rotate.write(angle_left)
-        elif msg == b"right-rotate": 
-            if angle_left > 160:
-                pass
-            elif angle_left <= 160 and angle_left >= 0:
-                angle_left -= 10
-                arm_servo_rotate.write(angle_left)
-
     elif topic == b"pinch":
         if msg == b"grab":
             motor_grab()
@@ -186,7 +155,7 @@ def cb(topic, msg):
         elif msg == b"off":
             off(np)
 
-
+# Ultrasonic sensor, temperature and humidity sensor functions
 def ultrasonic(sensor):
     try:
         distance = sensor.distance_cm()
@@ -206,7 +175,7 @@ def temp_humid(sensor):
     finally:
         pass
 
-#motor functions
+# Wheel motor functions
 def motor_pair_a_forward(speed):
     IN11.value(1)
     IN12.value(0)
@@ -246,6 +215,7 @@ def motor_pair_b_backward(speed):
     IN42.value(0)
     EN_A2.duty_u16(speed)
     EN_B2.duty_u16(speed)
+
 def motor_pair_b_stop():
     IN31.value(0)
     IN32.value(0)
@@ -274,7 +244,7 @@ def stop_all():
     motor_pair_a_stop()
     motor_pair_b_stop()
 
-claw motor functions
+# Claw motor functions
 def motor_grab():
     IN5.value(1)
     IN6.value(0)
@@ -303,14 +273,18 @@ def off(np):
     np.write()
     
 
+# Main function
 def main():
+    # Turn the Pico LED and LED ring on.
     led = Pin('LED', Pin.OUT)
     led.value(1)
     light(np)
+    # Establish connection to the wireless network and the MQTT server.
     try:
-        connect_internet(ssid,password="UCLA.HAcK.2024.Summer")
+        connect_internet(ssid,password="putNetworkPasswordHere")
         client = connect_mqtt(mqtt_server, mqtt_user, mqtt_pass)
 
+        # Pico subscribing from the MQTT server.
         client.set_callback(cb)
         client.subscribe("direction")
         client.subscribe("arm")
@@ -318,10 +292,10 @@ def main():
         client.subscribe("light")
         client.subscribe("speed")
 
-
-        #maybe put the publish in a loop so that the data gets updated
+        # cycles will prevent the temperature and humidity sensor from measuring too often, thus causing an error.
         client.publish("mytopic", "message")
         cycles = 0
+        # Update loop
         while True:
             if cycles == 20:
                 data = temp_humid(temp_humid_sensor)
@@ -331,11 +305,13 @@ def main():
             client.publish("ultrasonic", ultrasonic(ultrasonic_sensor))
             client.check_msg()
             sleep(0.1)
-            # cycles+=1
+            cycles+=1
 
+    # When the Pico stops running the program.
     except KeyboardInterrupt:
         print('keyboard interrupt')
     finally: 
+        # Turn off motors and LEDs.
         motor_pair_a_stop()
         motor_pair_b_stop()
         led.value(0)
